@@ -1,0 +1,71 @@
+package com.dicoding.recyclerviewapp
+
+//import android.annotation.SuppressLint
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+//import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
+//import com.dicoding.recyclerviewapp.ListAircraftAdapter.ListViewHolder.OnItemClickCallback
+
+
+//import javax.security.auth.callback.Callback
+
+class ListAircraftAdapter(private val listAircraft: ArrayList<aircraft>) : RecyclerView.Adapter<ListAircraftAdapter.ListViewHolder>() {
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
+
+    //@SuppressLint("SuspiciousIndentation")
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        i: Int
+    ): ListViewHolder {
+        val view: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_row_aircraft, parent, false)
+        return ListViewHolder(view)
+    }
+
+    override fun onBindViewHolder(
+        holder: ListViewHolder,
+        position: Int
+    ) {
+        val (name, description, photo) = listAircraft[position]
+        holder.imgPhoto.setImageResource(photo)
+        holder.tvName.text = name
+        holder.tvdescription.text = description
+
+        holder.itemView.setOnClickListener {
+//            Toast.makeText(holder.itemView.context,"Anda Memilih " + listAircraft[holder.adapterPosition].name, Toast.LENGTH_SHORT).show()
+            onItemClickCallback.onItemClicked(listAircraft[holder.adapterPosition])
+        }
+
+
+    }
+
+    override fun getItemCount(): Int = listAircraft.size
+
+
+    class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        val imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
+        val tvName: TextView = itemView.findViewById(R.id.tv_item_name)
+        val tvdescription: TextView = itemView.findViewById(R.id.tv_item_description)
+//       private fun showSelectedAircraft(aircraft: aircraft){
+    }
+//        }
+
+
+        interface OnItemClickCallback {
+            fun onItemClicked(data: aircraft)
+        }
+
+
+    }
+
+
+
